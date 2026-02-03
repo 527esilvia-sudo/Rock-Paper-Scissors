@@ -1,5 +1,5 @@
 /* Set all headers to use the 'Jersey 25' font and 25px size */
-header, h1, h2, h3, h4, h5, h6 {
+header, h2, h3, h4, h5, h6 {
     font-family: 'Jersey 25', sans-serif;
     font-size: 25px;
 }
