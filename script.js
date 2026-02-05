@@ -23,10 +23,8 @@ let userName = prompt('What is your name?')
 
 userChoice = document.getElementById('userChoice')
 
-if (computerChoice = 0 && userChoice = 1) {
-    return 'Computer wins Round 1!'
 
+
+function playRound(userChoice){
+if userChoice === 'rock' && computerChoice === 'scissors' 
 }
-
-
-

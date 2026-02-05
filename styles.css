@@ -20,3 +20,55 @@ header h1 {
     gap: 1rem;
     margin-top: 2rem;
 }
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.choices {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2rem;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.choice-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.choice-btn:hover {
+    opacity: 0.8;
+}
+
+.choice-btn:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.choice-btn:active {
+    outline: none;
+    box-shadow: none;
+    border: none;
+}
+
+.choice-btn img {
+    width: 150px !important;
+    height: 150px !important;
+    object-fit: fill;
+    display: block;
+}
