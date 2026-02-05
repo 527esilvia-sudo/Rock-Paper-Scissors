@@ -11,10 +11,8 @@ header h1 {
     margin-top: 1.5rem;
 }
 
-
 .game-setup {
     display: none;
-    
     flex-direction: column;
     align-items: center;
     gap: 1rem;
@@ -54,21 +52,22 @@ main {
     opacity: 0.8;
 }
 
-.choice-btn:focus {
-    outline: none;
-    box-shadow: none;
-    border: none;
-}
-
+.choice-btn:focus,
 .choice-btn:active {
     outline: none;
     box-shadow: none;
     border: none;
 }
 
+/* ALL IMAGES SAME SIZE WITHOUT DISTORTION */
 .choice-btn img {
-    width: 150px !important;
-    height: 150px !important;
-    object-fit: fill;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
     display: block;
+}
+
+/* ONLY FIX PAPER VISUAL SIZE (does NOT change layout spacing) */
+#paperChoice img {
+    transform: scale(1.5);
 }
