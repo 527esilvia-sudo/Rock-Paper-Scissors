@@ -1,62 +1,36 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rock, Paper, Scissors - Start</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="start-page">
+    <header>
+        <h1>Let's Play: Rock, Paper, Scissors</h1>
+    </header>
+    <main class="text-center mt-5">
+        <button id="playButton" class="btn btn-primary btn-lg">Start</button>
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-        <!-- Local styles -->
-        <link rel="stylesheet" href="styles.css" />
-    </head>
+        <div class="game-setup mt-4" aria-hidden="true">
+            <h2>Select Game Mode</h2>
+            <div class="btn-group mb-3" role="group" aria-label="Game mode">
+                <input type="radio" class="btn-check" name="mode" id="best3" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="best3">Best of 3</label>
 
-    <body>
-        <header>
-         <h1>Lets Play: Rock, Paper Scissors</h1>  
-        </header>
-        <main>
-            <div class="game-setup">
-                <h2>Select game mode</h2>
+                <input type="radio" class="btn-check" name="mode" id="best5" autocomplete="off">
+                <label class="btn btn-outline-primary" for="best5">Best of 5</label>
 
-                <div class="btn-group" role="group" aria-label="Game mode">
-                    <input type="radio" class="btn-check" name="mode" id="best3" autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="best3">Best of 3</label>
-
-                    <input type="radio" class="btn-check" name="mode" id="best5" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="best5">Best of 5</label>
-
-                    <input type="radio" class="btn-check" name="mode" id="best7" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="best7">Best of 7</label>
-                </div>
-
-                <button id="playButton" class="btn btn-primary">Start?</button>
+                <input type="radio" class="btn-check" name="mode" id="best7" autocomplete="off">
+                <label class="btn btn-outline-primary" for="best7">Best of 7</label>
             </div>
 
-        </main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+            <!-- Go to Game button removed; selecting a mode will navigate to game.html -->
+        </div>
+    </main>
+    <!-- Local script -->
+    <script src="script.js"></script>
+</body>
 </html>

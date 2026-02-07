@@ -2,63 +2,82 @@ let userScore = 0
 let computerScore = 0
 
 let computerChoice
-const choices = ["rock", "paper", "scissors"];
+const choices = ["rock", "paper", "scissors"]
 
-const startButton = document.getElementById("playButton");
-const gameSetup = document.querySelector(".game-setup");
+// Start button and game setup
+const startButton = document.getElementById("playButton")
+const gameSetup = document.querySelector(".game-setup")
 
+if (startButton && gameSetup) {
+  gameSetup.style.display = 'none'
 
+  startButton.addEventListener("click", function () {
+    gameSetup.style.display = "block"
+    startButton.style.display = "none"
+  })
 
-startButton.addEventListener("click", function () {
-  gameSetup.style.display = "block";
-  startButton.style.display = "none";
-});
-function getComputerChoice() {
-  const random = Math.floor(Math.random() * choices.length);
-  
-  return choices[random];
+  // Redirect to game.html when a mode is selected
+  const modeInputs = document.querySelectorAll('.game-setup input[name="mode"]')
+  modeInputs.forEach(inp => {
+    inp.addEventListener('change', () => {
+      const selected = document.querySelector('.game-setup input[name="mode"]:checked')
+      if (selected) {
+        const mode = selected.id // e.g. best3
+        window.location.href = `game.html?mode=${encodeURIComponent(mode)}`
+      }
+    })
+  })
 }
 
-computerChoice = getComputerChoice()
+function getComputerChoice() {
+  const random = Math.floor(Math.random() * choices.length)
+  return choices[random]
+}
 
-let userName = prompt('What is your name?')
+// Ask for name and update scoreboard if scoreboard exists
+let userName = "User"
+const userScoreEl = document.getElementById('userScore')
+function capitalizeFirst(name) {
+  const s = (name || '').toString().trim()
+  if (!s) return 'User'
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
+}
+if (userScoreEl) {
+  const raw = prompt('What is your name?') || userName
+  userName = capitalizeFirst(raw)
+  userScoreEl.innerHTML = `${userName} Score: ${userScore}`
+}
 
-userChoice = document.getElementById('userChoice')
-
-
-
+let _roundLocked = false
 function playRound(userChoice) {
+  if (_roundLocked) return
+  _roundLocked = true
 
-  if (userChoice === 'rock' && computerChoice === 'scissors') {
-        userWins()
-  }
-   if (userChoice === 'rock' && computerChoice === 'paper') {
-        computerWins()
-  }
-   if (userChoice === 'scissors' && computerChoice === 'rock') {
-        computerWins()
-  }
-   if (userChoice === 'paper' && computerChoice === 'rock') {
-        userWins()
-  }
-   if (userChoice === 'paper' && computerChoice === 'rock') {
-        userWins()
-  }
-   if (userChoice === 'paper' && computerChoice === 'scissors') {
-        computerWins()
-  }
-  if (userChoice === 'scissors' && computerChoice === 'paper') {
-        userWins()
-  }
-    if (userChoice === 'scissors' && computerChoice === 'scissors') {
-        roundTie()
-  }
-    if (userChoice === 'paper' && computerChoice === 'paper') {
-        roundTie()
-  }
-    if (userChoice === 'rock' && computerChoice === 'rock') {
-        roundTie()
-  }
+  const userDisplay = document.getElementById('userChoiceDisplay')
+  const compDisplay = document.getElementById('computerChoiceDisplay')
+
+  if (userDisplay) userDisplay.textContent = userChoice.toUpperCase()
+
+  computerChoice = getComputerChoice()
+  if (compDisplay) compDisplay.textContent = ''
+
+  setTimeout(() => {
+    if (compDisplay) compDisplay.textContent = computerChoice.toUpperCase()
+
+    if (userChoice === computerChoice) {
+      roundTie()
+    } else if (
+      (userChoice === 'rock' && computerChoice === 'scissors') ||
+      (userChoice === 'paper' && computerChoice === 'rock') ||
+      (userChoice === 'scissors' && computerChoice === 'paper')
+    ) {
+      userWins()
+    } else {
+      computerWins()
+    }
+
+    _roundLocked = false
+  }, 700)
 }
 
 function roundTie() {
@@ -66,13 +85,14 @@ function roundTie() {
 }
 
 function computerWins() {
-  computerScore = computerScore +1
+  computerScore++
   document.getElementById('roundAnnouncement').innerHTML = `Computer wins!`
   document.getElementById('computerScore').innerHTML = `Computer Score: ${computerScore}`
 }
 
 function userWins() {
-  userScore = userScore +1
+  userScore++
   document.getElementById('roundAnnouncement').innerHTML = `${userName} wins!`
-  document.getElementById('userScore').innerHTML = `${userName} Score: ${userScore}`
+  const el = document.getElementById('userScore')
+  if (el) el.innerHTML = `${userName} Score: ${userScore}`
 }
