@@ -4,6 +4,15 @@ let computerScore = 0
 let computerChoice
 const choices = ["rock", "paper", "scissors"]
 
+// --- Game mode logic ---
+const urlParams = new URLSearchParams(window.location.search)
+let mode = urlParams.get('mode') || 'best3'
+
+let roundsToWin = 2
+if (mode === 'best3') roundsToWin = 2
+else if (mode === 'best5') roundsToWin = 3
+else if (mode === 'best7') roundsToWin = 4
+
 // Start button and game setup
 const startButton = document.getElementById("playButton")
 const gameSetup = document.querySelector(".game-setup")
@@ -22,7 +31,7 @@ if (startButton && gameSetup) {
     inp.addEventListener('change', () => {
       const selected = document.querySelector('.game-setup input[name="mode"]:checked')
       if (selected) {
-        const mode = selected.id // e.g. best3
+        const mode = selected.id
         window.location.href = `game.html?mode=${encodeURIComponent(mode)}`
       }
     })
@@ -34,7 +43,7 @@ function getComputerChoice() {
   return choices[random]
 }
 
-// Ask for name and update scoreboard if scoreboard exists
+// Ask for name
 let userName = "User"
 const userScoreEl = document.getElementById('userScore')
 function capitalizeFirst(name) {
@@ -56,14 +65,27 @@ function playRound(userChoice) {
   const userDisplay = document.getElementById('userChoiceDisplay')
   const compDisplay = document.getElementById('computerChoiceDisplay')
 
-  if (userDisplay) userDisplay.textContent = userChoice.toUpperCase()
+  // Set user choice image and show it
+  if (userDisplay) {
+    userDisplay.src = choiceImages[userChoice]
+    userDisplay.classList.remove('hidden')
+  }
 
+  // Generate computer choice
   computerChoice = getComputerChoice()
-  if (compDisplay) compDisplay.textContent = ''
+  // Ensure computer hand is hidden until choice is revealed
+  if (compDisplay) {
+    compDisplay.classList.add('hidden')
+  }
 
   setTimeout(() => {
-    if (compDisplay) compDisplay.textContent = computerChoice.toUpperCase()
+    // Reveal computer choice
+    if (compDisplay) {
+      compDisplay.src = choiceImages[computerChoice]
+      compDisplay.classList.remove('hidden')
+    }
 
+    // Determine winner of round
     if (userChoice === computerChoice) {
       roundTie()
     } else if (
@@ -88,6 +110,11 @@ function computerWins() {
   computerScore++
   document.getElementById('roundAnnouncement').innerHTML = `Computer wins!`
   document.getElementById('computerScore').innerHTML = `Computer Score: ${computerScore}`
+
+  if (computerScore > roundsToWin) {
+    alert(`Computer wins the game!`) // real alert
+    resetGame()
+  }
 }
 
 function userWins() {
@@ -95,4 +122,26 @@ function userWins() {
   document.getElementById('roundAnnouncement').innerHTML = `${userName} wins!`
   const el = document.getElementById('userScore')
   if (el) el.innerHTML = `${userName} Score: ${userScore}`
+
+  if (userScore > roundsToWin) {
+    alert(`${userName} wins the game!`) // real alert
+    resetGame()
+  }
+}
+
+function resetGame() {
+  userScore = 0
+  computerScore = 0
+  document.getElementById('userScore').innerHTML = `${userName} Score: ${userScore}`
+  document.getElementById('computerScore').innerHTML = `Computer Score: ${computerScore}`
+
+  document.getElementById('userChoiceDisplay').classList.add('hidden')
+  document.getElementById('computerChoiceDisplay').classList.add('hidden')
+}
+
+// Choice images
+const choiceImages = {
+  rock: "Rock.png",
+  paper: "Paper.png",
+  scissors: "Scissors.png"
 }

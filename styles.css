@@ -83,3 +83,20 @@ main {
     display: block;
     margin: 0 auto;
 }
+.choice-display {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
+}
+
+.choice-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
+/* Flip the user hand to face computer */
+#userChoiceDisplay {
+  transform: scaleX(-1); /* user hand faces left */
+}
