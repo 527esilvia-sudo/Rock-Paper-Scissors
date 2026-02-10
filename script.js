@@ -1,147 +1,110 @@
-let userScore = 0
-let computerScore = 0
+let userScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
 
-let computerChoice
-const choices = ["rock", "paper", "scissors"]
+const choices = ["rock", "paper", "scissors"];
+const userDisplay = document.getElementById("userChoiceDisplay");
+const compDisplay = document.getElementById("computerChoiceDisplay");
+const userWrapper = document.getElementById("userWrapper");
+const compWrapper = document.getElementById("computerWrapper");
 
-// --- Game mode logic ---
-const urlParams = new URLSearchParams(window.location.search)
-let mode = urlParams.get('mode') || 'best3'
-
-let roundsToWin = 2
-if (mode === 'best3') roundsToWin = 2
-else if (mode === 'best5') roundsToWin = 3
-else if (mode === 'best7') roundsToWin = 4
-
-// Start button and game setup
-const startButton = document.getElementById("playButton")
-const gameSetup = document.querySelector(".game-setup")
-
-if (startButton && gameSetup) {
-  gameSetup.style.display = 'none'
-
-  startButton.addEventListener("click", function () {
-    gameSetup.style.display = "block"
-    startButton.style.display = "none"
-  })
-
-  // Redirect to game.html when a mode is selected
-  const modeInputs = document.querySelectorAll('.game-setup input[name="mode"]')
-  modeInputs.forEach(inp => {
-    inp.addEventListener('change', () => {
-      const selected = document.querySelector('.game-setup input[name="mode"]:checked')
-      if (selected) {
-        const mode = selected.id
-        window.location.href = `game.html?mode=${encodeURIComponent(mode)}`
-      }
-    })
-  })
-}
+let userName = prompt("What is your name?");
+document.getElementById("userScore").innerHTML = userName + " Score: 0";
 
 function getComputerChoice() {
-  const random = Math.floor(Math.random() * choices.length)
-  return choices[random]
+  return choices[Math.floor(Math.random() * choices.length)];
 }
 
-// Ask for name
-let userName = "User"
-const userScoreEl = document.getElementById('userScore')
-function capitalizeFirst(name) {
-  const s = (name || '').toString().trim()
-  if (!s) return 'User'
-  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()
-}
-if (userScoreEl) {
-  const raw = prompt('What is your name?') || userName
-  userName = capitalizeFirst(raw)
-  userScoreEl.innerHTML = `${userName} Score: ${userScore}`
-}
-
-let _roundLocked = false
 function playRound(userChoice) {
-  if (_roundLocked) return
-  _roundLocked = true
+  if (roundsPlayed >= 5) return;
 
-  const userDisplay = document.getElementById('userChoiceDisplay')
-  const compDisplay = document.getElementById('computerChoiceDisplay')
+  const computerChoice = getComputerChoice();
 
-  // Set user choice image and show it
-  if (userDisplay) {
-    userDisplay.src = choiceImages[userChoice]
-    userDisplay.classList.remove('hidden')
-  }
+  // Show user hand with bounce
+  userDisplay.src = capitalize(userChoice) + ".png";
+  userWrapper.classList.remove("bounce-in","hidden");
+  void userWrapper.offsetWidth;
+  userWrapper.classList.add("bounce-in");
 
-  // Generate computer choice
-  computerChoice = getComputerChoice()
-  // Ensure computer hand is hidden until choice is revealed
-  if (compDisplay) {
-    compDisplay.classList.add('hidden')
-  }
-
+  // Show computer hand with bounce after short delay
   setTimeout(() => {
-    // Reveal computer choice
-    if (compDisplay) {
-      compDisplay.src = choiceImages[computerChoice]
-      compDisplay.classList.remove('hidden')
-    }
+    compDisplay.src = capitalize(computerChoice) + ".png";
+    compWrapper.classList.remove("bounce-in","hidden");
+    void compWrapper.offsetWidth;
+    compWrapper.classList.add("bounce-in");
 
-    // Determine winner of round
+    // Win/Lose logic
     if (userChoice === computerChoice) {
-      roundTie()
+      roundTie();
     } else if (
-      (userChoice === 'rock' && computerChoice === 'scissors') ||
-      (userChoice === 'paper' && computerChoice === 'rock') ||
-      (userChoice === 'scissors' && computerChoice === 'paper')
+      (userChoice === "rock" && computerChoice === "scissors") ||
+      (userChoice === "paper" && computerChoice === "rock") ||
+      (userChoice === "scissors" && computerChoice === "paper")
     ) {
-      userWins()
+      userWins();
     } else {
-      computerWins()
+      computerWins();
     }
 
-    _roundLocked = false
-  }, 700)
+    roundsPlayed++;
+    if (roundsPlayed === 5) endGame();
+  }, 500);
 }
 
 function roundTie() {
-  document.getElementById('roundAnnouncement').innerHTML = `It's a tie!`
+  document.getElementById("roundAnnouncement").innerHTML = "It's a tie!";
 }
 
 function computerWins() {
-  computerScore++
-  document.getElementById('roundAnnouncement').innerHTML = `Computer wins!`
-  document.getElementById('computerScore').innerHTML = `Computer Score: ${computerScore}`
-
-  if (computerScore > roundsToWin) {
-    alert(`Computer wins the game!`) // real alert
-    resetGame()
-  }
+  computerScore++;
+  document.getElementById("roundAnnouncement").innerHTML = "Computer wins!";
+  document.getElementById("computerScore").innerHTML = "Computer Score: " + computerScore;
 }
 
 function userWins() {
-  userScore++
-  document.getElementById('roundAnnouncement').innerHTML = `${userName} wins!`
-  const el = document.getElementById('userScore')
-  if (el) el.innerHTML = `${userName} Score: ${userScore}`
+  userScore++;
+  document.getElementById("roundAnnouncement").innerHTML = userName + " wins!";
+  document.getElementById("userScore").innerHTML = userName + " Score: " + userScore;
+}
 
-  if (userScore > roundsToWin) {
-    alert(`${userName} wins the game!`) // real alert
-    resetGame()
+function endGame() {
+  let message = "";
+  if (userScore > computerScore) {
+    message = "Congrats " + userName + "! You win the game!";
+  } else if (computerScore > userScore) {
+    message = "Sorry " + userName + ", the computer wins the game!";
+  } else {
+    message = "It's a tie overall!";
   }
+
+  const announcement = document.getElementById("roundAnnouncement");
+  announcement.innerHTML = message;
+  announcement.classList.add("big-message");
+
+  const resetBtn = document.createElement("button");
+  resetBtn.innerText = "Play Again";
+  resetBtn.className = "play-again-btn";
+  resetBtn.onclick = resetGame;
+  document.body.appendChild(resetBtn);
 }
 
 function resetGame() {
-  userScore = 0
-  computerScore = 0
-  document.getElementById('userScore').innerHTML = `${userName} Score: ${userScore}`
-  document.getElementById('computerScore').innerHTML = `Computer Score: ${computerScore}`
+  userScore = 0;
+  computerScore = 0;
+  roundsPlayed = 0;
 
-  document.getElementById('userChoiceDisplay').classList.add('hidden')
-  document.getElementById('computerChoiceDisplay').classList.add('hidden')
+  document.getElementById("userScore").innerHTML = userName + " Score: 0";
+  document.getElementById("computerScore").innerHTML = "Computer Score: 0";
+  document.getElementById("roundAnnouncement").innerHTML = "";
+  document.getElementById("roundAnnouncement").className = "";
+
+  userWrapper.classList.add("hidden");
+  compWrapper.classList.add("hidden");
+
+  const btn = document.querySelector(".play-again-btn");
+  if (btn) btn.remove();
 }
 
-// Choice images
-const choiceImages = {
-  rock: "Rock.png",
-  paper: "Paper.png",
-  scissors: "Scissors.png"
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
