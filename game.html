@@ -3,45 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <title>Rock Paper Scissors</title>
+
+  <!-- Bootstrap FIRST (layout only) -->
+  <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- YOUR CSS LAST (overrides bootstrap) -->
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <header>
-    <h1>Rock Paper Scissors</h1>
-  </header>
 
-  <!-- Scoreboard -->
-  <div id="scoreboard">
-    <div id="userScore"></div>
-    <div id="computerScore">Computer Score: 0</div>
-  </div>
+  <!-- container only controls width + centering -->
+  <div class="container text-center">
 
-  <!-- Round announcement -->
-  <div id="roundAnnouncement"></div>
+    <header>
+      <h1>Rock Paper Scissors</h1>
+    </header>
 
-  <!-- Hands display -->
-  <div class="choice-display">
-    <div id="userWrapper" class="hand-wrapper hidden">
-      <img id="userChoiceDisplay" alt="Your choice" />
+    <!-- Scoreboard -->
+    <div id="scoreboard">
+      <div id="userScore"></div>
+      <div id="computerScore">Computer Score: 0</div>
     </div>
-    <div id="computerWrapper" class="hand-wrapper hidden">
-      <img id="computerChoiceDisplay" alt="Computer choice" />
+
+    <!-- Round announcement -->
+    <div id="roundAnnouncement"></div>
+
+    <!-- Hands display -->
+    <div class="choice-display">
+
+      <div id="userWrapper" class="hand-wrapper hidden">
+        <img id="userChoiceDisplay" alt="Your choice" />
+      </div>
+
+      <div id="computerWrapper" class="hand-wrapper hidden">
+        <img id="computerChoiceDisplay" alt="Computer choice" />
+      </div>
+
     </div>
+
+    <!-- Choice buttons -->
+   <div class="choices">
+
+  <button id="rockChoice" class="choice-btn" onclick="playRound('rock')">
+    <img src="rock-choice.png" alt="Rock" />
+  </button>
+
+  <button id="paperChoice" class="choice-btn" onclick="playRound('paper')">
+    <img src="paper-choice.png" alt="Paper" />
+  </button>
+
+  <button id="scissorsChoice" class="choice-btn" onclick="playRound('scissors')">
+    <img src="scissors-choice.png" alt="Scissors" />
+  </button>
+
+</div>
+
   </div>
 
-  <!-- Choice buttons -->
-  <div class="choices">
-    <button id="rockChoice" class="choice-btn" onclick="playRound('rock')">
-      <img src="rock-choice.png" alt="Rock" />
-    </button>
-    <button id="paperChoice" class="choice-btn" onclick="playRound('paper')">
-      <img src="paper-choice.png" alt="Paper" />
-    </button>
-    <button id="scissorsChoice" class="choice-btn" onclick="playRound('scissors')">
-      <img src="scissors-choice.png" alt="Scissors" />
-    </button>
-  </div>
+  <!-- Bootstrap JS (does NOT affect styling) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="script.js"></script>
+
 </body>
 </html>
